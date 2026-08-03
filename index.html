@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="default">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>盘点计划</title>
+  <link rel="stylesheet" href="./tokens.css"><link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./flat-form.css">
+</head>
+<body>
+<div class="c-shell" data-component="ErpShell">
+  <aside class="c-shell__sider">
+    <div class="brand"><span class="brand-mark">W</span><span>Warehouse</span></div>
+    <nav>
+      <div class="nav-group">作业中心</div><a><span class="nav-icon">↙</span>入库管理</a><a><span class="nav-icon">↗</span>出库管理</a>
+      <div class="nav-group">库存管理</div><a><span class="nav-icon">▦</span>库存查询</a><a><span class="nav-icon">≋</span>库存流水</a><a class="active"><span class="nav-icon">◎</span>盘点计划</a><a><span class="nav-icon">✓</span>盘点任务</a>
+    </nav>
+  </aside>
+  <main class="c-shell__main">
+    <header class="topbar"><div class="workspace-name"><button class="c-icon-button menu-toggle">☰</button><span>WMS 工作台</span><em>华东一号仓</em></div><div class="top-actions"><button class="c-icon-button top-icon">?</button><button class="c-icon-button top-icon">♢<i></i></button><span class="avatar">管</span><span>仓库管理员⌄</span></div></header>
+    <div class="breadcrumb">首页 / 库存管理 / <strong>盘点计划</strong></div>
+    <div class="page">
+      <header class="c-page-header" data-component="PageHeaderBar">
+        <div><h1>盘点计划</h1><p>配置周期盘点与风险触发规则，自动生成 SKU + 货位维度的盘点任务</p></div>
+        <div class="header-actions"><button class="btn">操作日志</button><button id="createBtn" class="btn btn--primary">＋ 新建盘点计划</button></div>
+      </header>
+
+      <section class="overview">
+        <div><i class="metric-icon blue">计</i><section><span>启用计划</span><strong>6</strong><small>共 8 条计划</small></section></div>
+        <div><i class="metric-icon purple">任</i><section><span>今日已生成任务</span><strong>12</strong><small>1,126 条盘点明细</small></section></div>
+        <div><i class="metric-icon orange">待</i><section><span>待执行盘点任务</span><strong class="warning">18</strong><small>高优先级 5 个</small></section></div>
+        <div><i class="metric-icon green">重</i><section><span>近 7 天重复数据剔除</span><strong>286</strong><small>SKU + 货位</small></section></div>
+      </section>
+
+      <section class="surface-panel main-panel">
+        <div class="tabs"><button class="c-tab tab active" data-view="plan">计划管理</button><button class="c-tab tab" data-view="record">生成记录</button></div>
+        <div id="planView">
+          <div class="c-filter" data-component="QueryFilterBar">
+            <label>计划名称<input id="keyword" class="input" placeholder="请输入计划名称"></label>
+            <label>计划类型<button class="c-select select-control">全部<span>⌄</span></button></label>
+            <label>适用仓库<button class="c-select select-control">全部仓库<span>⌄</span></button></label>
+            <label>状态<button class="c-select select-control">全部<span>⌄</span></button></label>
+            <div class="filter-actions"><button id="queryBtn" class="btn btn--primary">查询</button><button id="resetBtn" class="btn">重置</button></div>
+          </div>
+          <div class="table-toolbar"><span>共 <b id="count">5</b> 条计划</span><div><button class="btn btn--sm">列设置</button><button class="btn btn--sm">导出</button></div></div>
+          <div class="c-table" data-component="DataTablePanel">
+            <table><thead><tr><th>计划名称 / 编号</th><th>盘点策略</th><th>数据范围与条件</th><th>任务生成规则</th><th>执行周期</th><th>状态</th><th>下次执行</th><th>操作</th></tr></thead>
+            <tbody id="rows">
+              <tr data-name="拣货缺货日盘"><td><a class="link plan-name">拣货缺货日盘</a><small>CP20260718001 · 华东一号仓</small></td><td><span class="strategy-icon red">缺</span><div>拣货异常触发<small>拣货缺货</small></div></td><td>过去 7 天发生缺货<br><small>剔除 3 天内已盘点</small></td><td>50 条/任务 · 高优先级<br><small>预计生成 4 个任务</small></td><td>每天 02:00</td><td><span class="tag tag--success">启用</span></td><td>明天 02:00</td><td><button class="c-link link-btn run">立即执行</button><button class="c-link link-btn edit">编辑</button><button class="c-link link-btn more">更多⌄</button></td></tr>
+              <tr data-name="A类高动销周盘"><td><a class="link plan-name">A类高动销周盘</a><small>CP20260715002 · 华东一号仓</small></td><td><span class="strategy-icon blue">A</span><div>ABC 周期盘点<small>A 类商品</small></div></td><td>近 30 天出库 ≥ 100 件<br><small>剔除 7 天内已盘点</small></td><td>100 条/任务 · 普通<br><small>单次最多 1,000 条</small></td><td>每周一 03:00</td><td><span class="tag tag--success">启用</span></td><td>07-27 03:00</td><td><button class="c-link link-btn run">立即执行</button><button class="c-link link-btn edit">编辑</button><button class="c-link link-btn more">更多⌄</button></td></tr>
+              <tr data-name="盘点结果随机抽盘"><td><a class="link plan-name">盘点结果随机抽盘</a><small>CP20260712003 · 华南二号仓</small></td><td><span class="strategy-icon orange">抽</span><div>历史结果抽盘<small>随机抽取 SKU</small></div></td><td>过去 30 天已完成盘点<br><small>盘平、盘盈、盘亏</small></td><td>随机抽取 100 个 SKU<br><small>50 条/任务</small></td><td>每周三 05:00</td><td><span class="tag tag--success">启用</span></td><td>07-29 05:00</td><td><button class="c-link link-btn run">立即执行</button><button class="c-link link-btn edit">编辑</button><button class="c-link link-btn more">更多⌄</button></td></tr>
+              <tr data-name="A区通道周期盘点"><td><a class="link plan-name">A区通道周期盘点</a><small>CP20260701004 · 华东一号仓</small></td><td><span class="strategy-icon purple">周</span><div>周期性盘点<small>通道 / 指定货位</small></div></td><td>A01、A02 通道<br><small>共 86 个货位</small></td><td>80 条/任务 · 普通<br><small>按通道分别拆分</small></td><td>每月 1 日 01:00</td><td><span class="tag tag--default">停用</span></td><td>—</td><td><button class="c-link link-btn run">立即执行</button><button class="c-link link-btn edit">编辑</button><button class="c-link link-btn more">更多⌄</button></td></tr>
+              <tr data-name="差异高风险复盘"><td><a class="link plan-name">差异高风险复盘</a><small>CP20260628005 · 全部仓库</small></td><td><span class="strategy-icon red">差</span><div>历史差异触发<small>盘亏/盘盈异常</small></div></td><td>近 30 天差异率 ≥ 2%<br><small>剔除执行中盘点任务</small></td><td>20 条/任务 · 紧急<br><small>按仓库分别拆分</small></td><td>每天 04:00</td><td><span class="tag tag--success">启用</span></td><td>明天 04:00</td><td><button class="c-link link-btn run">立即执行</button><button class="c-link link-btn edit">编辑</button><button class="c-link link-btn more">更多⌄</button></td></tr>
+            </tbody></table>
+          </div>
+          <div class="pagination"><span>共 5 条</span><button class="c-page">‹</button><button class="c-page current">1</button><button class="c-page">›</button><button class="c-select select-control compact">20 条/页⌄</button></div>
+        </div>
+        <div id="recordView" hidden>
+          <div class="c-filter"><label>执行批次<input class="input" placeholder="请输入批次号"></label><label>执行结果<button class="c-select select-control">全部<span>⌄</span></button></label><div class="filter-actions"><button class="btn btn--primary">查询</button><button class="btn">重置</button></div></div>
+          <div class="c-table record-table"><table><thead><tr><th>执行批次</th><th>计划名称</th><th>执行方式</th><th>命中明细</th><th>重复剔除</th><th>生成任务</th><th>执行结果</th><th>执行时间</th></tr></thead><tbody><tr><td>EX20260724020001</td><td>拣货缺货日盘</td><td>定时执行</td><td>186</td><td>12</td><td>4</td><td><span class="tag tag--success">成功</span></td><td>2026-07-24 02:00:08</td></tr><tr><td>EX20260723142503</td><td>A类高动销周盘</td><td>手动执行</td><td>735</td><td>48</td><td>8</td><td><span class="tag tag--success">成功</span></td><td>2026-07-23 14:25:31</td></tr><tr><td>EX20260723020001</td><td>拣货缺货日盘</td><td>定时执行</td><td>0</td><td>23</td><td>0</td><td><span class="tag tag--warning">无可盘数据</span></td><td>2026-07-23 02:00:05</td></tr></tbody></table></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div id="mask" class="mask" hidden></div>
+<aside id="drawer" class="c-edit-drawer drawer" data-component="EditDrawer" aria-hidden="true">
+  <header><div><h2 id="drawerTitle">新建盘点计划</h2><p>选择策略模板后，可继续调整具体条件</p></div><button id="closeBtn" class="c-icon-button close">×</button></header>
+  <div class="drawer-body">
+    <nav class="drawer-nav" aria-label="盘点计划配置步骤"><a class="active" href="#basic"><i>1</i>基础信息</a><a href="#strategy"><i>2</i>盘点策略</a><a href="#condition"><i>3</i>筛选条件</a><a href="#taskRule"><i>4</i>任务规则</a><a href="#schedule"><i>5</i>执行计划</a></nav>
+    <div class="drawer-content">
+    <section id="basic" class="drawer-section"><h3><span>1</span>基础信息</h3><div class="form-grid"><label class="form-item required"><b>计划名称</b><input id="planName" class="input" placeholder="请输入计划名称"></label><label class="form-item required"><b>适用仓库</b><button class="c-select select-control full">华东一号仓<span>⌄</span></button></label><label class="form-item"><b>任务优先级</b><button class="c-select select-control full">普通<span>⌄</span></button></label><label class="form-item"><b>盘点维度</b><button class="c-select select-control full">SKU + 货位<span>⌄</span></button></label></div></section>
+    <section id="strategy" class="drawer-section"><h3><span>2</span>选择盘点策略</h3><div class="strategy-grid">
+      <button class="c-strategy strategy selected" data-type="shortage"><i class="red">缺</i><b>拣货异常</b><small>拣货缺货、库存不足</small></button>
+      <button class="c-strategy strategy" data-type="abc"><i class="blue">A</i><b>ABC / 动销</b><small>按价值或动销频率分级</small></button>
+      <button class="c-strategy strategy" data-type="sample"><i class="orange">抽</i><b>抽盘</b><small>历史盘点结果随机抽查</small></button>
+      <button class="c-strategy strategy" data-type="periodic"><i class="purple">周</i><b>周期性盘点</b><small>按通道或货位定期盘点</small></button>
+      <button class="c-strategy strategy" data-type="variance"><i class="red">差</i><b>历史差异</b><small>差异率或连续异常</small></button>
+    </div></section>
+    <section id="condition" class="drawer-section"><h3><span>3</span>筛选条件</h3><div class="section-help" id="strategyHelp">基于业务事件筛选需要盘点的 SKU 与货位。</div><div class="condition-box">
+      <div class="condition-head"><div><b id="conditionTitle">满足以下全部条件</b><small>条件值可根据仓库实际管理口径调整</small></div><button class="c-link link-btn">＋ 添加条件</button></div>
+      <div id="conditions"></div>
+    </div>
+    <div class="exclude-box"><div><b>去重与排除规则</b><small>避免重复生成无效盘点任务</small></div><label><input id="excludeRecent" type="checkbox" checked> 剔除过去 <input id="excludeDays" class="input mini" type="number" value="3"> 天内已完成盘点的 SKU + 货位</label><label><input type="checkbox" checked> 剔除已有待执行 / 执行中盘点任务的数据</label><label><input type="checkbox"> 排除零库存货位</label></div></section>
+    <section id="taskRule" class="drawer-section"><h3><span>4</span>任务生成规则</h3><div class="form-grid"><label class="form-item required"><b>每任务明细上限</b><div><input id="limit" class="input short" type="number" value="50"> 条<small>超过上限自动拆分任务</small></div></label><label class="form-item"><b>单次生成上限</b><div><input class="input short" type="number" value="1000"> 条<small>超出部分留待下次执行</small></div></label><label class="form-item"><b>拆分方式</b><button class="c-select select-control full">按仓库 + 库区拆分<span>⌄</span></button></label><label class="form-item"><b>空货位策略</b><button class="c-select select-control full">排除空货位<span>⌄</span></button></label></div></section>
+    <section id="schedule" class="drawer-section"><h3><span>5</span>执行计划</h3><div class="mode-row"><label><input type="radio" name="mode" checked> 定时执行</label><label><input type="radio" name="mode"> 仅手动执行</label><label><input type="radio" name="mode"> 条件触发后立即执行</label></div><div class="schedule-row"><button class="c-select select-control">每天<span>⌄</span></button><span>于</span><input class="input time" type="time" value="02:00"><span>执行</span></div></section>
+    <section class="rule-preview"><div><b>规则预览</b><span class="tag tag--processing">预计命中 186 条</span></div><p id="preview"></p><small>预计拆分为 4 个盘点任务；实际结果以执行时库存数据为准。</small></section>
+    </div>
+  </div>
+  <footer><button id="cancelBtn" class="btn">取消</button><button class="btn">保存并停用</button><button id="saveBtn" class="btn btn--primary">保存并启用</button></footer>
+</aside>
+
+<div id="confirm" class="c-risk-confirm modal" data-component="RiskConfirm" hidden><div class="confirm-icon">!</div><div><h3>立即执行盘点计划？</h3><p id="confirmText"></p><div class="alert">执行时会重新计算命中数据，并自动剔除近期已盘点或已有进行中任务的 SKU + 货位。</div></div><footer><button id="cancelRun" class="btn">取消</button><button id="confirmRun" class="btn btn--primary">确认执行</button></footer></div>
+<div id="toast" class="c-feedback toast" data-component="FeedbackState" hidden>✓ 操作成功</div>
+<script src="./script.js"></script>
+</body></html>
