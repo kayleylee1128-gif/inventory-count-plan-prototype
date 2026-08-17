@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>盘点计划</title>
-  <link rel="stylesheet" href="./tokens.css"><link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./flat-form.css">
+  <link rel="stylesheet" href="./tokens.css"><link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./flat-form.css"><link rel="stylesheet" href="./annotations.css">
 </head>
 <body>
 <div class="c-shell" data-component="ErpShell">
@@ -26,8 +26,6 @@
       <section class="overview">
         <div><i class="metric-icon blue">计</i><section><span>启用计划</span><strong>6</strong><small>共 8 条计划</small></section></div>
         <div><i class="metric-icon purple">任</i><section><span>今日已生成任务</span><strong>12</strong><small>1,126 条盘点明细</small></section></div>
-        <div><i class="metric-icon orange">待</i><section><span>待执行盘点任务</span><strong class="warning">18</strong><small>高优先级 5 个</small></section></div>
-        <div><i class="metric-icon green">重</i><section><span>近 7 天重复数据剔除</span><strong>286</strong><small>SKU + 货位</small></section></div>
       </section>
 
       <section class="surface-panel main-panel">
@@ -71,7 +69,7 @@
     <section id="basic" class="drawer-section"><h3><span>1</span>基础信息</h3><div class="form-grid"><label class="form-item required"><b>计划名称</b><input id="planName" class="input" placeholder="请输入计划名称"></label><label class="form-item required"><b>适用仓库</b><button class="c-select select-control full">华东一号仓<span>⌄</span></button></label><label class="form-item"><b>任务优先级</b><button class="c-select select-control full">普通<span>⌄</span></button></label><label class="form-item"><b>盘点维度</b><button class="c-select select-control full">SKU + 货位<span>⌄</span></button></label></div></section>
     <section id="strategy" class="drawer-section"><h3><span>2</span>选择盘点策略</h3><div class="strategy-grid">
       <button class="c-strategy strategy selected" data-type="shortage"><i class="red">缺</i><b>拣货异常</b><small>拣货缺货、库存不足</small></button>
-      <button class="c-strategy strategy" data-type="abc"><i class="blue">A</i><b>ABC / 动销</b><small>按价值或动销频率分级</small></button>
+      <button class="c-strategy strategy" data-type="abc"><i class="blue">销</i><b>动销</b><small>按销售状态与出库数量筛选</small></button>
       <button class="c-strategy strategy" data-type="sample"><i class="orange">抽</i><b>抽盘</b><small>历史盘点结果随机抽查</small></button>
       <button class="c-strategy strategy" data-type="periodic"><i class="purple">周</i><b>周期性盘点</b><small>按通道或货位定期盘点</small></button>
       <button class="c-strategy strategy" data-type="variance"><i class="red">差</i><b>历史差异</b><small>差异率或连续异常</small></button>
@@ -91,5 +89,13 @@
 
 <div id="confirm" class="c-risk-confirm modal" data-component="RiskConfirm" hidden><div class="confirm-icon">!</div><div><h3>立即执行盘点计划？</h3><p id="confirmText"></p><div class="alert">执行时会重新计算命中数据，并自动剔除近期已盘点或已有进行中任务的 SKU + 货位。</div></div><footer><button id="cancelRun" class="btn">取消</button><button id="confirmRun" class="btn btn--primary">确认执行</button></footer></div>
 <div id="toast" class="c-feedback toast" data-component="FeedbackState" hidden>✓ 操作成功</div>
-<script src="./script.js"></script>
+<button id="annotationToggle" class="c-annotation-toggle annotation-toggle" type="button">关闭标注</button>
+<div id="annotationLayer" class="annotation-layer" aria-hidden="true"></div>
+<aside id="annotationDrawer" class="annotation-drawer" aria-label="原型标注">
+  <header><div><h2>原型标注 <span id="annotationTotal">14</span></h2><p>点击条目定位页面中的对应区域</p></div><button id="annotationClose" class="c-annotation-close annotation-close" type="button">×</button></header>
+  <nav id="annotationFilters" class="annotation-filters"></nav>
+  <div id="annotationList" class="annotation-list"></div>
+</aside>
+<script src="./script.js?v=20260817-2"></script>
+<script src="./annotations.js?v=20260817-2"></script>
 </body></html>
