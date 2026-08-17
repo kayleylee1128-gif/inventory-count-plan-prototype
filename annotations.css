@@ -1,0 +1,218 @@
+.c-shell,
+.drawer {
+  transition: margin-right var(--motion), right var(--motion);
+}
+
+body.annotation-mode .c-shell {
+  margin-right: 360px;
+}
+
+body.annotation-mode .drawer {
+  right: 360px;
+}
+
+.annotation-toggle {
+  position: fixed;
+  z-index: 1310;
+  right: 24px;
+  top: 76px;
+  height: 32px;
+  padding: 0 13px;
+  border: 1px solid var(--color-primary-6);
+  border-radius: 6px;
+  background: var(--color-primary-6);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+}
+
+body.annotation-mode .annotation-toggle {
+  right: 380px;
+}
+
+.annotation-drawer {
+  position: fixed;
+  z-index: 1300;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-left: 1px solid var(--color-border-secondary);
+  box-shadow: -10px 0 30px rgba(15, 23, 42, .1);
+  transform: translateX(100%);
+  transition: transform var(--motion);
+}
+
+body.annotation-mode .annotation-drawer {
+  transform: translateX(0);
+}
+
+.annotation-drawer header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.annotation-drawer h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.annotation-drawer h2 span {
+  display: inline-grid;
+  min-width: 22px;
+  height: 22px;
+  margin-left: 5px;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--color-primary-bg);
+  color: var(--color-primary-7);
+  font-size: 12px;
+}
+
+.annotation-drawer header p {
+  margin: 5px 0 0;
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+
+.annotation-close {
+  border: 0;
+  background: transparent;
+  color: var(--color-text-tertiary);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.annotation-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.annotation-filter {
+  height: 26px;
+  padding: 0 9px;
+  border: 1px solid var(--color-border);
+  border-radius: 13px;
+  background: #fff;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.annotation-filter.active {
+  border-color: var(--color-primary-6);
+  background: var(--color-primary-bg);
+  color: var(--color-primary-7);
+}
+
+.annotation-list {
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+}
+
+.annotation-item {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 12px;
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.annotation-item:hover,
+.annotation-item.active {
+  border-color: var(--annotation-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--annotation-color) 12%, transparent);
+}
+
+.annotation-item__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.annotation-number,
+.annotation-point {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--annotation-color);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.annotation-number {
+  width: 22px;
+  height: 22px;
+}
+
+.annotation-type {
+  color: var(--annotation-color);
+  font-size: 12px;
+}
+
+.annotation-item h3 {
+  margin: 0;
+  font-size: 13px;
+}
+
+.annotation-item p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.annotation-layer {
+  position: fixed;
+  z-index: 1290;
+  inset: 0;
+  pointer-events: none;
+}
+
+.annotation-point {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 7px rgba(15, 23, 42, .22);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.annotation-target-highlight {
+  animation: annotationHighlight 1.5s ease;
+}
+
+@keyframes annotationHighlight {
+  0%, 100% { box-shadow: none; }
+  25%, 70% { box-shadow: 0 0 0 4px rgba(22, 119, 255, .22); }
+}
+
+.annotation-page { --annotation-color: var(--color-ai-accent); }
+.annotation-field { --annotation-color: var(--color-primary-6); }
+.annotation-interaction { --annotation-color: var(--color-chart-6); }
+.annotation-rule { --annotation-color: var(--color-warning); }
+.annotation-pending { --annotation-color: var(--color-error); }
+
+body:not(.annotation-mode) .annotation-layer,
+body:not(.annotation-mode) .annotation-drawer {
+  visibility: hidden;
+}
